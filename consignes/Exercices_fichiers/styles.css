@@ -1,0 +1,26 @@
+body {
+	padding-top: 60px;
+}
+
+.well p {
+	margin: 0;
+}
+
+.syntaxhighlighter {
+	padding: 5px;
+}
+
+.explanation {
+    color: black;
+    background-color: white;
+    border: 1px solid #888;
+    padding: 3px 5px;
+}
+
+body img {
+    max-width: 600px;
+}
+
+code {
+    color: black;
+}
