@@ -24,19 +24,22 @@ ORDER BY utilisateur_id;
 
 -- Test où j'essaie d'abord d'avoir toutes 
 -- les informations.
+-- J'ai un doute sur la pertinance du nombre de commentaire
+-- Je dois vérifier cela 
 SELECT Utilisateur.id AS utilisateur_id,
+	Article.id as article_id, -- Pour test
 	Article.date_publication,
 	VM_utilisateur_nbre_article.nombre_article AS nombre_article_ecris,
-	Commentaire.id,
-	Commentaire.date_commentaire
+	Commentaire.id AS commentaire_id
+-- 	Commentaire.date_commentaire
 FROM Utilisateur
-INNER JOIN VM_utilisateur_nbre_article
- 	ON Utilisateur.id = VM_utilisateur_nbre_article.utilisateur_id
 INNER JOIN Article
  	ON Utilisateur.id = Article.auteur_id
+INNER JOIN VM_utilisateur_nbre_article
+ 	ON Utilisateur.id = VM_utilisateur_nbre_article.utilisateur_id
 LEFT OUTER JOIN Commentaire 
  	ON Utilisateur.id = Commentaire.auteur_id
-ORDER BY utilisateur_id ASC, Article.date_publication DESC;
+ORDER BY utilisateur_id ASC, Article.date_publication DESC, commentaire_id ASC;
 
 -- -- Test où j'essaie d'avoir la table 
 -- -- avec uniquement les infos voulu
