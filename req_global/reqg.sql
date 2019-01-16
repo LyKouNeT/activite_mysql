@@ -1,7 +1,3 @@
--- !!!!!! Il y a un probleme sur la VM_article_nbre_commentaire
--- il manque l'article 7.
--- VOIR test_req3.sql pour tenter de trouver une solution.
-
 -- Amélioration 1
 -- Consignes :
 -- Sur la page d’accueil, on affiche le nombre 
@@ -25,13 +21,14 @@
 -- tous les id d'article et leurs nombres de commentaire associés.
 
 CREATE TABLE VM_preleminaire
-	ENGINE = InnoDB
-	SELECT Article.id as article_id,
-		COUNT(Commentaire.id) AS nombre_commentaires
-	FROM Article
-	LEFT OUTER JOIN Commentaire
-		ON Article.id = Commentaire.article_id
-	GROUP BY article_id;
+ENGINE = InnoDB
+SELECT Article.id as article_id,
+	COUNT(Commentaire.id) AS nombre_commentaires
+FROM Article
+LEFT OUTER JOIN Commentaire
+	ON Article.id = Commentaire.article_id
+GROUP BY article_id
+ORDER BY article_id;
 
 CREATE TABLE VM_article_nbre_commentaire
 ENGINE = InnoDB
@@ -40,7 +37,7 @@ SELECT Article.id as article_id,
 FROM Article
 LEFT OUTER JOIN VM_preleminaire
 	ON Article.id = VM_preleminaire.article_id
-GROUP BY article_id;
+ORDER BY article_id;
 
 DROP TABLE VM_preleminaire;
 
