@@ -1,0 +1,30 @@
+DROP TABLE IF EXISTS Article ;
+DROP TABLE IF EXISTS Commentaire;
+
+CREATE TABLE Article(
+	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY
+)
+ENGINE = InnoDB;
+
+CREATE TABLE Commentaire(
+	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	article_id INT UNSIGNED,
+
+	CONSTRAINT fk_article_id
+		FOREIGN KEY (article_id)
+		REFERENCES Article(id)
+)
+ENGINE = InnoDB;
+
+SELECT * FROM Article;
+-- ALTER TABLE Commentaire
+-- ADD CONSTRAINT fk_article_id FOREIGN KEY (article_id) REFERENCES Article(id);
+INSTER INTO Article
+VALUES();
+
+SELECT * FROM Article;
+
+-- DELIMITER |
+-- BEGIN
+-- END |
+-- DELIMITER ;
