@@ -1,0 +1,2 @@
+DROP DATABASE p2p_blog;
+SOURCE p2.sql
