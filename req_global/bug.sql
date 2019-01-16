@@ -1,6 +1,8 @@
 DROP TABLE IF EXISTS Commentaire;
 DROP TABLE IF EXISTS Article ;
 DROP PROCEDURE IF EXISTS insert_article;
+DROP TABLE IF EXISTS VM_preliminaire;
+DROP TABLE IF EXISTS VM_anc;
 
 CREATE TABLE Article(
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY
@@ -34,8 +36,8 @@ CALL insert_article;
 -- SELECT * FROM Article;
 
 INSERT INTO Commentaire(article_id)
-VALUES(1), 
-	(1), 
+VALUES(2), 
+	(2), 
 	(2),
 	(5),
        	(5), 
@@ -64,3 +66,29 @@ LEFT OUTER JOIN Commentaire
 	ON Article.id = Commentaire.article_id
 GROUP BY article_id
 ORDER BY article_id;
+
+
+-- DEUXIEME test.
+-- J'ai peut être trouvé une parade.
+
+CREATE TABLE VM_preliminaire
+SELECT Article.id AS article_id,
+	COUNT(Commentaire.id) AS nombre_commentaire
+FROM Article
+LEFT OUTER JOIN Commentaire
+	ON Article.id = Commentaire.article_id
+GROUP BY article_id
+ORDER BY article_id;
+
+CREATE TABLE VM_anc
+SELECT Article.id AS article_id,
+	COALESCE(VM_preliminaire.nombre_commentaire, 0) AS nombre_commentaire
+FROM Article
+LEFT OUTER JOIN VM_preliminaire
+	ON Article.id =  VM_preliminaire.article_id
+ORDER BY article_id;
+
+SELECT * FROM VM_anc;
+
+
+-- Ca fonctionne !!!

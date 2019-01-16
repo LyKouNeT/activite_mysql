@@ -12,18 +12,19 @@
 -- mise à jour afin que l’information soit toujours exacte.
 
 -- On stocke le nombre de commentaire par 
--- article dans la vue matérialisée suivante.
--- Pour les prochaines requêtes, il suffira de 
--- --
+-- article dans la vue matérialisée VM_article_nbre_commentaire.
 -- REMARQUE IMPORTANTE : 
 -- Pour une raison qui m'échappe,
 -- "GROUP BY article_id" va faire disparaitre l'article avec id = 7 !
--- C'est pour cette raison qu'il faut faire une jointure
--- EXTERNE sur table Article avec
--- cette VM pour obtenir le nombre 
--- d'article par commentaire.
+-- C'est pour cette raison que je crée VM_preleminaire.
+-- Cette dernière n'aura pas de ligne pour article_id = 7.
+-- Ensuite je crée VM_article_nbre_commentaire : 
+-- je joins Article par la gauche avec VM_preleminaire
+-- et je prends soin de mettre un COAlESCE sur la colonne nombre_commentaire.
+-- VM_article_nbre_commentaire possède ainsi 
+-- tous les id d'article et leurs nombres de commentaire associés.
 
-CREATE TABLE VM_article_nbre_commentaire
+CREATE TABLE VM_preleminaire
 	ENGINE = InnoDB
 	SELECT Article.id as article_id,
 		COUNT(Commentaire.id) AS nombre_commentaires
@@ -31,6 +32,17 @@ CREATE TABLE VM_article_nbre_commentaire
 	LEFT OUTER JOIN Commentaire
 		ON Article.id = Commentaire.article_id
 	GROUP BY article_id;
+
+CREATE TABLE VM_article_nbre_commentaire
+ENGINE = InnoDB
+SELECT Article.id as article_id,
+	COALESCE(VM_preleminaire.nombre_commentaires, 0) AS nombre_commentaires
+FROM Article
+LEFT OUTER JOIN VM_preleminaire
+	ON Article.id = VM_preleminaire.article_id
+GROUP BY article_id;
+
+DROP TABLE VM_preleminaire;
 
 -- On ajoute maintenant des trigger sur la table
 -- Commentaire pour tenir à jour VM_article_nbre_commentaire.
